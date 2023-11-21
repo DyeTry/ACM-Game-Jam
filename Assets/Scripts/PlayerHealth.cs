@@ -2,33 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
     private float health;
     private float lerpTimer;
+
+    [Header("Health Bar")]
     public float maxHealth = 100;
     public float chipSpeed = 2f;
     public Image frontHealthBar;
     public Image backHealthBar;
-    // Start is called before the first frame update
+    public TextMeshProUGUI healthText;
+
+    [Header("Damage Overlay")]
+    public Image overlay;
+    public float duration;
+    public float fadeSpeed;
+
+    private float durationTimer;
+
     void Start()
     {
         health = maxHealth;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
     }
 
-    // Update is called once per frame
     void Update()
     {
         health = Mathf.Clamp(health, 0, maxHealth);
         UpdateHealthUI();
-        if (Input.GetKeyDown(KeyCode.G))
+
+        if (overlay.color.a > 0)
         {
-            RestoreHealth(Random.Range(5, 10));
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            TakeDamage(Random.Range(5, 10));
+            if (health < 30)
+            {
+                return;
+            }
+            durationTimer += Time.deltaTime;
+            if (durationTimer > duration)
+            {
+                float tempAlpha = overlay.color.a;
+                tempAlpha -= Time.deltaTime * fadeSpeed;
+                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+            }
         }
     }
 
@@ -54,19 +72,27 @@ public class PlayerHealth : MonoBehaviour
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / chipSpeed;
             frontHealthBar.fillAmount = Mathf.Lerp(fillFront, backHealthBar.fillAmount, percentComplete);
-
         }
+        healthText.text = Mathf.Round(health) + "/" + Mathf.Round(maxHealth);
     }
 
     public void TakeDamage(float damage)
     {
         health -= damage;
         lerpTimer = 0f;
+        durationTimer = 0;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
     }
 
     public void RestoreHealth(float healAmount)
     {
         health += healAmount;
         lerpTimer = 0f;
+    }
+
+    public void IncreaseHealth(int level)
+    {
+        maxHealth += ((health * 0.01f) * (100 - level) * 0.1f);
+        health = maxHealth;
     }
 }

@@ -9,7 +9,7 @@ public class PlayerMotor : MonoBehaviour
     private bool isGrounded;
     public float speed = 5f;
     public float gravity = -9.8f;
-    public float jumpHeight = 3f;
+    public float jumpHeight = 1f;
 
     public bool crouching;
     private float crouchTimer;
@@ -66,7 +66,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if (isGrounded)
         {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -1.0f * gravity);
         }
     }
 
