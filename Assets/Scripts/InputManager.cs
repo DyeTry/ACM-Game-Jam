@@ -10,7 +10,6 @@ public class InputManager : MonoBehaviour
 
     private PlayerMotor motor;
     private PlayerLook look;
-    private PlayerShoot gunAction;
 
     void Awake()
     {
@@ -19,18 +18,13 @@ public class InputManager : MonoBehaviour
 
         motor = GetComponent<PlayerMotor>();
         look = GetComponent<PlayerLook>();
-        gunAction = GetComponent<PlayerShoot>();
+
 
         onFoot.Jump.performed += ctx => motor.Jump();
 
         onFoot.Crouch.performed += ctx => motor.Crouch();
         onFoot.Sprint.performed += ctx => motor.Sprint();
-
-        onFoot.Shoot.started += ctx => gunAction.StartShoot();
-        onFoot.Shoot.canceled += ctx => gunAction.EndShoot();
-        onFoot.Reload.performed += ctx => gunAction.Reload();
     }
-
 
     void FixedUpdate()
     {
