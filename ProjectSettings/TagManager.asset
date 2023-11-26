@@ -7,6 +7,8 @@ TagManager:
   - PrimaryWeapon
   - SecondaryWeapon
   - Projectile
+  - AmmoText
+  - Animator
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Interactable
   - WhatIsGround
   - WhatIsPlayer
-  - 
+  - WhatIsWorldObjects
   - 
   - 
   - 

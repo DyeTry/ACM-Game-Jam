@@ -19,6 +19,9 @@ public class GunInfo : ScriptableObject
     public float fireRate;
     public float reloadTime;
 
+    [Header("Currency")]
+    public int currencyPerHit;
+
     [HideInInspector]
     public bool isReloading;
 }

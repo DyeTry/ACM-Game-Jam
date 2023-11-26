@@ -20,10 +20,11 @@ public class GunLogic : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private float timeToFire = 0f;
+    private bool canShoot;
+    private bool canReload;
 
     void Start()
     {
-
         gunInfo.currentAmmo = gunInfo.magSize;
         ammoText.text = gunInfo.currentAmmo + "/" + gunInfo.maxAmmo;
     }
@@ -36,9 +37,6 @@ public class GunLogic : MonoBehaviour
     
     void Update()
     {
-        //FIX SHOOTING and RELOADING
-        //USE Input System preferably to get buttons
-
         ammoText.text = gunInfo.currentAmmo + "/" + gunInfo.maxAmmo;
 
         if (gunInfo.isReloading) {return;}
@@ -49,19 +47,26 @@ public class GunLogic : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown("r") && gunInfo.currentAmmo <= gunInfo.magSize)
+        if (canReload)
         {
-            StartCoroutine(Reload());
-            return;
+            if (gunInfo.currentAmmo <= gunInfo.magSize)
+            {
+                StartCoroutine(Reload());
+                canReload = false;
+                return;
+            }
         }
 
-        if (Input.GetMouseButton(0) && Time.time >= timeToFire)
+        if (canShoot)
         {
-            timeToFire = Time.time + 1f/gunInfo.fireRate;
-
-            if (gunInfo.currentAmmo > 0)
+            if (Time.time >= timeToFire)
             {
-                Shoot();
+                timeToFire = Time.time + 1f/gunInfo.fireRate;
+
+                if (gunInfo.currentAmmo > 0)
+                {
+                    Shoot();
+                }
             }
         }
     }
@@ -74,7 +79,7 @@ public class GunLogic : MonoBehaviour
         yield return new WaitForSeconds(gunInfo.reloadTime - 0.25f);
         animator.SetBool("Reloading", false);
         yield return new WaitForSeconds(0.25f);
-
+        
         gunInfo.maxAmmo -= gunInfo.magSize - gunInfo.currentAmmo;
         gunInfo.currentAmmo = gunInfo.magSize;
         gunInfo.isReloading = false;
@@ -83,14 +88,12 @@ public class GunLogic : MonoBehaviour
     public void Shoot()
     {
         muzzleFlash.Play();
-
         gunInfo.currentAmmo--;
-
         RaycastHit hit;
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunInfo.maxDistance))
         {
-        EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
+        EnemyScalable target = hit.transform.GetComponent<EnemyScalable>();
          
         if (target != null)
         {
@@ -101,4 +104,12 @@ public class GunLogic : MonoBehaviour
         Destroy(impact, 2f);
         }
     }
+
+    public void StartShoot() { canShoot = true; }
+
+    public void EndShoot() { canShoot = false; }
+
+    public void StartReload() { canReload = true; }
+
+    public void EndReload() { canReload = false; }
 }

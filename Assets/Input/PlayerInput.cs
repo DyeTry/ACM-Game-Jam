@@ -80,6 +80,33 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""dad1841e-a5f3-49d8-b599-bfea96909693"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca4403ae-0d4a-4aaf-bcff-4b3c01e8332d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a2c7569e-e5ad-44a9-bb81-fafdc2f5d558"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -251,7 +278,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d5cf7e9f-bcff-40c3-93d0-eef50ca600ce"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -295,11 +322,77 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""35d59989-9659-4015-b880-a0a78d5fd85c"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7766b5c-7cca-401a-89e2-886030c50028"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3376a75d-5663-43e8-afc0-64bccab10b24"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84dcd46b-5ab5-40d4-a290-429b9830390d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""924e0069-c0f9-4ce8-84e5-63b5f952c6ac"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6800e329-08b9-42a1-b324-8fd34f7817af"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c8df6a5-5e69-43f4-8861-39c7f6941691"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -832,6 +925,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_OnFoot_Crouch = m_OnFoot.FindAction("Crouch", throwIfNotFound: true);
         m_OnFoot_Sprint = m_OnFoot.FindAction("Sprint", throwIfNotFound: true);
         m_OnFoot_Interact = m_OnFoot.FindAction("Interact", throwIfNotFound: true);
+        m_OnFoot_Shoot = m_OnFoot.FindAction("Shoot", throwIfNotFound: true);
+        m_OnFoot_Reload = m_OnFoot.FindAction("Reload", throwIfNotFound: true);
+        m_OnFoot_Switch = m_OnFoot.FindAction("Switch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -911,6 +1007,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Crouch;
     private readonly InputAction m_OnFoot_Sprint;
     private readonly InputAction m_OnFoot_Interact;
+    private readonly InputAction m_OnFoot_Shoot;
+    private readonly InputAction m_OnFoot_Reload;
+    private readonly InputAction m_OnFoot_Switch;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
@@ -921,6 +1020,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_OnFoot_Crouch;
         public InputAction @Sprint => m_Wrapper.m_OnFoot_Sprint;
         public InputAction @Interact => m_Wrapper.m_OnFoot_Interact;
+        public InputAction @Shoot => m_Wrapper.m_OnFoot_Shoot;
+        public InputAction @Reload => m_Wrapper.m_OnFoot_Reload;
+        public InputAction @Switch => m_Wrapper.m_OnFoot_Switch;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -948,6 +1050,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(IOnFootActions instance)
@@ -970,6 +1081,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(IOnFootActions instance)
@@ -1113,6 +1233,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

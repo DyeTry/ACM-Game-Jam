@@ -7,7 +7,8 @@ public class WeaponSwitching : MonoBehaviour
 {
 
     [Header("Switch Weapon")]
-    [SerializeField] private int weaponIndex = 0;
+    public int weaponIndex = 0;
+    private bool canSwitch;
 
 
     private void Start()
@@ -18,39 +19,21 @@ public class WeaponSwitching : MonoBehaviour
 
     private void Update()
     {
-
-        int previousSelectedWeapon = weaponIndex;
-
-        if(Input.GetAxis("Mouse ScrollWheel") > 0f)
-        {
-            if (weaponIndex >= transform.childCount - 1)
-            {
-                weaponIndex = 0;
-            }
-            else
-            {
-                weaponIndex++;
-            }
-        }
-
-        if(Input.GetAxis("Mouse ScrollWheel") < 0f)
+        //Debug.Log("In Update");
+        if(canSwitch)
         {
             if (weaponIndex <= 0)
             {
+                //Debug.Log("In If Block");
                 weaponIndex = transform.childCount - 1;
             }
             else
             {
+                //Debug.Log("In Else Block");
                 weaponIndex--;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {weaponIndex = 0;}
-        if (Input.GetKeyDown(KeyCode.Alpha2) && transform.childCount >= 1) {weaponIndex = 1;}
-
-        if (previousSelectedWeapon != weaponIndex)
-        {
             SelectedWeapon();
+            canSwitch = false;
         }
     }
 
@@ -70,4 +53,6 @@ public class WeaponSwitching : MonoBehaviour
             i++;
         }
     }
+
+    public void StartSwitch() { canSwitch = true; }
 }

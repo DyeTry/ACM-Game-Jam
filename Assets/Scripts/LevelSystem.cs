@@ -6,17 +6,20 @@ using UnityEngine.UI;
 
 public class LevelSystem : MonoBehaviour
 {
+    [Header("Experience")]
     public int level;
     public float currentXp;
     public float requiredXp;
 
     private float lerpTimer;
     private float delayTimer;
+
     [Header("UI")]
     public Image frontXpBar;
     public Image backXpBar;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI xpText;
+
     [Header("Multipliers")]
     [Range(1f,300f)]
     public float additionMultipler = 300;
@@ -37,14 +40,7 @@ public class LevelSystem : MonoBehaviour
     void Update()
     {
         UpdateXpUI();
-        if (Input.GetKeyDown(KeyCode.Equals))
-        {
-            GainExperienceFlatRate(20);
-            if (currentXp > requiredXp)
-            {
-                LevelUp();
-            }
-        }
+        if (currentXp >= requiredXp) LevelUp();
     }
 
     public void UpdateXpUI()
@@ -72,17 +68,6 @@ public class LevelSystem : MonoBehaviour
         lerpTimer = 0f;
     }
 
-    public void LevelUp()
-    {
-        level++;
-        frontXpBar.fillAmount = 0;
-        backXpBar.fillAmount = 0;
-        currentXp = Mathf.RoundToInt(currentXp - requiredXp);
-        GetComponent<PlayerHealth>().IncreaseHealth(level);
-        requiredXp = CalculateRequiredXp();
-        levelText.text = "Level: " + level;
-    }
-
     public void GainExperienceScalable(float xpGained, int passedLevel)
     {
         if (passedLevel < level)
@@ -96,6 +81,17 @@ public class LevelSystem : MonoBehaviour
         }
         lerpTimer = 0f;
         delayTimer = 0f;
+    }
+
+    public void LevelUp()
+    {
+        level++;
+        frontXpBar.fillAmount = 0;
+        backXpBar.fillAmount = 0;
+        currentXp = Mathf.RoundToInt(currentXp - requiredXp);
+        GetComponent<PlayerHealth>().IncreaseHealth(level);
+        requiredXp = CalculateRequiredXp();
+        levelText.text = "Level: " + level;
     }
 
     private int CalculateRequiredXp()
